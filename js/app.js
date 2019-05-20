@@ -18,7 +18,7 @@ function init(){
     scores = [0 , 0]; //Scores of the players
     roundScore = 0; //Round score
     activePlayer = 0;   //Current players
-    goalScore = 20; //Score for win
+    goalScore = 100; //Score for win
     gamePlaying = true; //State variable for check if the game is over
   
     //score, current, players name, winner and active class
