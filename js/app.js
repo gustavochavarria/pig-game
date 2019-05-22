@@ -10,16 +10,18 @@ GAME RULES:
 */
 
 // var scores, roundScore, activePlayer, goalScore, gamePlaying;
-let scores, roundScore, activePlayer, goalScore, gamePlaying;
+let scores, roundScore, activePlayer, gamePlaying;
+
+const  goalScore = 5;
 
 //Set values to 0
-init();
+// init();
 
-function init(){
+(function init(){
     scores = [0 , 0]; //Scores of the players
     roundScore = 0; //Round score
     activePlayer = 0;   //Current players
-    goalScore = 100; //Score for win
+    // goalScore = 20; //Score for win
     gamePlaying = true; //State variable for check if the game is over
 
     //score, current, players name, winner and active class
@@ -33,14 +35,14 @@ function init(){
     document.getElementById('current-0').textContent = '0';
     document.getElementById('current-1').textContent = '0';
 
-    document.querySelector('.player-0-panel').classList.remove('winner');
-    document.querySelector('.player-1-panel').classList.remove('winner');
-    document.querySelector('.player-0-panel').classList.remove('active');
-    document.querySelector('.player-1-panel').classList.remove('active');
+    document.querySelector('.player-0-panel').classList.remove('winner', 'active');
+    document.querySelector('.player-1-panel').classList.remove('winner', 'active');
+    // document.querySelector('.player-0-panel').classList.remove('active');
+    // document.querySelector('.player-1-panel').classList.remove('active');
     document.querySelector('.player-0-panel').classList.add('active');
 
     document.querySelector('.dice').style.display = 'none'
-}
+})();
 
 
 document.querySelector('.btn-roll').addEventListener('click', function(){
@@ -79,10 +81,11 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
 });
 
 document.querySelector('.btn-hold').addEventListener('click', function(){
+    //if(!gamePlaying) return ;
+
     if(gamePlaying){
         scores[activePlayer] += roundScore;
         document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
-
 
         scores[activePlayer] >= goalScore ? winnerFunction() : nextPlayer();
     }
@@ -96,7 +99,8 @@ function nextPlayer(){
     document.querySelector(`#current-${activePlayer}`).textContent = roundScore;
 
     //Next player turn
-    activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+    // activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+    activePlayer = activePlayer === 0 ? 1 : 0;
 
     //Display the current player
     document.querySelector('.player-0-panel').classList.toggle('active');
