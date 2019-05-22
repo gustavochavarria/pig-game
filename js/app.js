@@ -9,7 +9,8 @@ GAME RULES:
 
 */
 
-var scores, roundScore, activePlayer, goalScore, gamePlaying;
+// var scores, roundScore, activePlayer, goalScore, gamePlaying;
+let scores, roundScore, activePlayer, goalScore, gamePlaying;
 
 //Set values to 0
 init();
@@ -20,9 +21,9 @@ function init(){
     activePlayer = 0;   //Current players
     goalScore = 100; //Score for win
     gamePlaying = true; //State variable for check if the game is over
-  
+
     //score, current, players name, winner and active class
-    
+
     document.getElementById('name-0').textContent = 'Player 1';
     document.getElementById('name-1').textContent = 'Player 2';
 
@@ -46,23 +47,34 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
 
    if(gamePlaying){
         // 1. Random number
-        var dice = Math.floor(Math.random() * 6) + 1;
+        // var dice = Math.floor(Math.random() * 6) + 1;
+        const dice = Math.floor(Math.random() * 6) + 1;
 
         //2. Display the result
-        var diceDOM = document.querySelector('.dice');
-        
+        // var diceDOM = document.querySelector('.dice');
+        const diceDOM = document.querySelector('.dice');
+
         diceDOM.style.display = 'block';
-        diceDOM.src = '../img/dice-' + dice + ".png";
+        // diceDOM.src = '../img/dice-' + dice + ".png";
+        diceDOM.src = `./img/dice-${dice}.png`;
 
         //3. Update the round score if the rolled number was NOT a 1
         if(dice != 1){
             roundScore += dice;
-            document.getElementById('current-' + activePlayer).textContent = roundScore;
-        } 
-        else{
+            document.getElementById(`current-${activePlayer}`).textContent = roundScore;
+
+            return;
+        }
+
+        //Agregar una forma de espera....
+        // el Dado #1 no se muestra porque se ejecuta inmediatamente nextPlayer()
+
+        //setTimeout es una opcion
+
+        setTimeout(()=> {
             alert("Oh no! You rolls a 1, it's the next player's turn");
             nextPlayer();
-        }
+        }, 500);
    }
 });
 
@@ -71,16 +83,17 @@ document.querySelector('.btn-hold').addEventListener('click', function(){
         scores[activePlayer] += roundScore;
         document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
 
-        
+
         scores[activePlayer] >= goalScore ? winnerFunction() : nextPlayer();
     }
-    
+
 });
 
 function nextPlayer(){
     //Reset the round score
     roundScore = 0;
-    document.querySelector('#current-' + activePlayer).textContent = roundScore;
+    // document.querySelector('#current-' + activePlayer).textContent = roundScore;
+    document.querySelector(`#current-${activePlayer}`).textContent = roundScore;
 
     //Next player turn
     activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
@@ -93,6 +106,8 @@ function nextPlayer(){
 
 function winnerFunction(){
     gamePlaying = false;
+
+    //use string interpolation....
     document.getElementById('name-' + activePlayer).textContent = 'Winner!';
     document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
     document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
